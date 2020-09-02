@@ -9,6 +9,10 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="sss_customer_app"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyD8OG3WpyZf2J8U2Iq6-itZnDLHC0vpa00"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
