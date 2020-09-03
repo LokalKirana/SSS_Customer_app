@@ -250,7 +250,7 @@ class _CurrentLocationState extends State<CurrentLocation> {
       "AddressInfo": {
         "type": "default",
         "buildingInfo": _userData['building'],
-        "road": "_selectedPlace.road",
+        "road": _selectedPlace.road,
         "landmark": _userData['landmark'],
         "subLocality": _selectedPlace.subLocality,
         "sub_adminstrative_area": _selectedPlace.subAdministrativeArea,
@@ -262,7 +262,9 @@ class _CurrentLocationState extends State<CurrentLocation> {
         "longitude": _selectedPlace.longitude
       }
     };
-    await Provider.of<Auth>(context, listen: false)
-        .register(userRegistrationData);
+    try {
+      await Provider.of<Auth>(context, listen: false)
+          .register(userRegistrationData);
+    } catch (e) {}
   }
 }

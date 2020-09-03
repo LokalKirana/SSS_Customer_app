@@ -6,9 +6,10 @@ import './providers/auth.dart';
 import './screens/login_screen.dart';
 import './screens/otp_screen.dart';
 import './screens/current_location_screen.dart';
+import './screens/user_location_screen.dart';
 
 import 'themes/default_theme.dart';
-import './home.dart';
+import 'screens/home_screen.dart';
 
 void main() async => {
       WidgetsFlutterBinding.ensureInitialized(),
@@ -34,10 +35,13 @@ class SSSCustomer extends StatelessWidget {
             title: 'Flutter Demo',
             theme: DefaultTheme.themeData,
             home: authData.isAuth
-                ? authData.isRegistered ? Home() : CurrentLocation()
+                ? authData.isRegistered ? HomeScreen() : CurrentLocation()
                 : authData.userPhone == null
                     ? LoginScreen()
                     : OtpConfirmScreen(),
+            routes: {
+              LocationScreen.routeName: (_) => LocationScreen(),
+            },
             debugShowCheckedModeBanner: false,
           );
         },

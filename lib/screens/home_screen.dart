@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import './Pages/store_page.dart';
-import './Pages/cart_page.dart';
-import './Pages/catagory_page.dart';
-import './Pages/offers_page.dart';
-import 'Pages/cart_page.dart';
-import 'Pages/offers_page.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart' as loc;
 
-class Home extends StatefulWidget {
+import './homePages/store_page.dart';
+import './homePages/cart_page.dart';
+import './homePages/catagory_page.dart';
+import './homePages/offers_page.dart';
+
+import './user_location_screen.dart';
+
+class HomeScreen extends StatefulWidget {
   final cart = 10;
   @override
-  _HomeState createState() => _HomeState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeScreenState extends State<HomeScreen> {
   GlobalKey _bottomNavigationKey = GlobalKey();
   int _currentIndex = 0;
+  bool _locationLoading = false;
+  bool _isInit = true;
+  double _longitude;
+  double _latitude;
+  String _location = 'Unknown';
 
   List<Widget> _tabPages = <Widget>[
     StorePage(),
@@ -25,6 +33,28 @@ class _HomeState extends State<Home> {
   ];
 
   var _navTabs;
+
+  Future<void> _getCurrentUserLocation() async {
+    setState(() {
+      _locationLoading = true;
+    });
+    final locData = await loc.Location().getLocation();
+    final location = await getPlaceDetails(locData.latitude, locData.longitude);
+    setState(() {
+      _locationLoading = false;
+      _location = location;
+    });
+  }
+
+  Future<String> getPlaceDetails(
+    double latitude,
+    double longitude,
+  ) async {
+    final placeList =
+        await Geolocator().placemarkFromCoordinates(latitude, longitude);
+    final place = placeList[0];
+    return place.locality;
+  }
 
   @override
   initState() {
@@ -73,20 +103,13 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  Widget callPage(int currentIndex) {
-    switch (currentIndex) {
-      case 0:
-        return StorePage();
-      case 1:
-        return OffersPage();
-      case 2:
-        return CatagoryPage();
-      case 3:
-        return CartPage();
-        break;
-      default:
-        return StorePage();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isInit) {
+      _getCurrentUserLocation();
     }
+    _isInit = false;
   }
 
   @override
@@ -102,17 +125,32 @@ class _HomeState extends State<Home> {
                 fontSize: 22,
               ),
             ),
-            Row(
-              children: [
-                Icon(Icons.location_on),
-                Text(
-                  'Hyderbad',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            )
+            _locationLoading
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.white,
+                      strokeWidth: 2.0,
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () => Navigator.of(context).pushNamed(
+                      LocationScreen.routeName,
+                      arguments: _getCurrentUserLocation,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.location_on),
+                        Text(
+                          _location,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
           ],
         ),
         leading: ClipOval(

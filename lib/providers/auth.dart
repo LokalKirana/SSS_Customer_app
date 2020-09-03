@@ -176,7 +176,6 @@ class Auth with ChangeNotifier {
       final response = await http.post(url,
           body: requestBody, headers: BackendConfig.getTokenHeader(_userToken));
       final responseBody = json.decode(response.body);
-      print(responseBody);
       if (responseBody['status']) {
         _userName = info["UserInfo"]["name"];
         _userEmail = info["UserInfo"]["email"];
