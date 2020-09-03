@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-
 import './Pages/store_page.dart';
 import './Pages/cart_page.dart';
 import './Pages/catagory_page.dart';
