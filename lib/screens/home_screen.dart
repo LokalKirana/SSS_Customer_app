@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as loc;
+import 'package:sss_customer_app/screens/contactus_screen.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth.dart';
 
 import './homePages/store_page.dart';
 import './homePages/cart_page.dart';
@@ -171,12 +174,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   size: 26.0,
                 ),
               )),
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(Icons.more_vert),
-              )),
+          PopupMenuButton(
+            color: Colors.purpleAccent,
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 1,
+                child: Text('Logout'),
+              ),
+              PopupMenuItem(
+                value: 2,
+                child: Text('About Us'),
+              ),
+            ],
+            onSelected: (int menu) {
+              if (menu == 1) {
+                Provider.of<Auth>(context, listen: true).logout();
+              } else if (menu == 2) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ContactScreenScreen()));
+              }
+            },
+          ),
         ],
       ),
       //body: tabs[_currentIndex],

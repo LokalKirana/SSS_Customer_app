@@ -157,7 +157,7 @@ class _MapScreenState extends State<MapScreen> {
               right: 10,
               child: IconButton(
                 iconSize: 90,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).accentColor,
                 splashColor: Colors.red,
                 splashRadius: 40,
                 icon: Icon(Icons.add_circle),

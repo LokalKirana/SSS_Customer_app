@@ -34,11 +34,12 @@ class SSSCustomer extends StatelessWidget {
           return MaterialApp(
             title: 'Flutter Demo',
             theme: DefaultTheme.themeData,
-            home: authData.isAuth
+            home: HomeScreen(),
+            /*home: authData.isAuth
                 ? authData.isRegistered ? HomeScreen() : CurrentLocation()
                 : authData.userPhone == null
                     ? LoginScreen()
-                    : OtpConfirmScreen(),
+                    : OtpConfirmScreen(),*/
             routes: {
               LocationScreen.routeName: (_) => LocationScreen(),
             },
